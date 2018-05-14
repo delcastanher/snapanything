@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- https://cloud.google.com/appengine/docs/standard/java/config/cron -->
+<cronentries>
+    <cron>
+        <url>/timeline</url>
+        <description>daily summary job</description>
+        <schedule>every 2 hours from 01:00 to 19:00</schedule>
+    </cron>
+    <cron>
+        <url>/timeline?rt</url>
+        <description>daily summary job</description>
+        <schedule>every 2 hours from 02:00 to 20:00</schedule>
+    </cron>
+</cronentries>
