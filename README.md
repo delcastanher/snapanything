@@ -25,6 +25,8 @@ detailed instructions.
 
     gcloud app create
 
+* Change the **your-project-ID-goes-here** information at `pom.xml` to your Google App Engine Project ID
+
 * Edit the `twitter4j.properties` file filling up with your credentials
 
 * Edit the **final variables** at `SnapTwitter.java` to personalize behavior   
