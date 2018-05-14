@@ -1,16 +1,20 @@
 package com.github.delcastanher.snapanything;
 
 import twitter4j.*;
+import twitter4j.conf.ConfigurationBuilder;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 public class SnapTwitter {
 
     // START OF CUSTOMIZABLE VARIABLES
+    final private String O_AUTH_CONSUMER_KEY = "*********************";
+    final private String O_AUTH_CONSUMER_SECRET = "******************************************";
+    final private String O_AUTH_ACCESS_TOKEN = "**************************************************";
+    final private String O_AUTH_ACCESS_TOKEN_SECRET = "******************************************";
     final private int DAYS_TO_KEEP = 7;
     final private boolean KEEP_FAVORITES = true;
     final private boolean KEEP_RETWEETS_OF_ME = true;
@@ -21,7 +25,14 @@ public class SnapTwitter {
     Date now = new Date();
 
     public SnapTwitter(){
-        twitter = TwitterFactory.getSingleton();
+        ConfigurationBuilder cb = new ConfigurationBuilder();
+        cb.setDebugEnabled(true)
+                .setOAuthConsumerKey(O_AUTH_CONSUMER_KEY)
+                .setOAuthConsumerSecret(O_AUTH_CONSUMER_SECRET)
+                .setOAuthAccessToken(O_AUTH_ACCESS_TOKEN)
+                .setOAuthAccessTokenSecret(O_AUTH_ACCESS_TOKEN_SECRET);
+        TwitterFactory tf = new TwitterFactory(cb.build());
+        twitter = tf.getInstance();
     }
 
     public void snapTimeline() throws TwitterException {
