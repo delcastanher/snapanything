@@ -42,4 +42,8 @@ To use vist:
 
     mvn appengine:deploy
 
+Upload your cron
+    
+    ./appengine-java-sdk/bin/appcfg.sh -A your-app-id -V app-version update_cron [YOUR_APP_DIR]
+
 To use vist:  https://YOUR-PROJECT-ID.appspot.com

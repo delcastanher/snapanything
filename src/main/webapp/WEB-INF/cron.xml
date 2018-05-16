@@ -2,13 +2,13 @@
 <!-- https://cloud.google.com/appengine/docs/standard/java/config/cron -->
 <cronentries>
     <cron>
-        <url>/timeline</url>
-        <description>daily summary job</description>
-        <schedule>every 2 hours from 01:00 to 19:00</schedule>
+        <url>/timeline?rt</url>
+        <description>delete retweeted tweets below average</description>
+        <schedule>every 180 minutes</schedule>
     </cron>
     <cron>
-        <url>/timeline?rt</url>
-        <description>daily summary job</description>
-        <schedule>every 2 hours from 02:00 to 20:00</schedule>
+        <url>/timeline</url>
+        <description>delete the rest</description>
+        <schedule>every 2 hours</schedule>
     </cron>
 </cronentries>
