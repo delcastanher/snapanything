@@ -27,6 +27,16 @@ detailed instructions.
 
 * Change the **your-project-ID-goes-here** information at `pom.xml` to your Google App Engine Project ID
 
+* Access [https://apps.twitter.com/](https://apps.twitter.com/)
+
+* Create new app
+
+* Manage Keys and Access Tokens
+
+* Create my access token
+
+* Copy Keys, Secrets and Tokens
+
 * Edit the **final variables** at `SnapTwitter.java` filling up with your credentials and to personalize behavior   
 
 ## Maven
