@@ -3,10 +3,11 @@ package com.github.delcastanher.snapanything;
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class SnapTwitter {
 
@@ -15,14 +16,14 @@ public class SnapTwitter {
     final private String O_AUTH_CONSUMER_SECRET = "******************************************";
     final private String O_AUTH_ACCESS_TOKEN = "**************************************************";
     final private String O_AUTH_ACCESS_TOKEN_SECRET = "******************************************";
-    final private int DAYS_TO_KEEP = 7;
-    final private boolean KEEP_FAVORITES = true;
-    final private boolean KEEP_RETWEETS_OF_ME = true;
+    final private long DAYS_TO_KEEP = 1L;
+    final private boolean KEEP_FAVORITES = false;
+    final private boolean KEEP_RETWEETS_OF_ME = false;
     // END OF CUSTOMIZABLE VARIABLES
 
     private Twitter twitter;
     private List<String> deletedStatuses = new ArrayList<String>();
-    Date now = new Date();
+    private Date dateToDeleteBefore;
 
     public SnapTwitter(){
         ConfigurationBuilder cb = new ConfigurationBuilder();
@@ -33,6 +34,7 @@ public class SnapTwitter {
                 .setOAuthAccessTokenSecret(O_AUTH_ACCESS_TOKEN_SECRET);
         TwitterFactory tf = new TwitterFactory(cb.build());
         twitter = tf.getInstance();
+        dateToDeleteBefore = Date.from(LocalDateTime.now().minusDays(DAYS_TO_KEEP).atZone(ZoneId.systemDefault()).toInstant());
     }
 
     public void snapTimeline() throws TwitterException {
@@ -82,7 +84,7 @@ public class SnapTwitter {
         return retweetsTotalSum;
     }
 
-    private boolean isEligibleToDelete(Status status, boolean keepRetweetsOfMe) {
+    public boolean isEligibleToDelete(Status status, boolean keepRetweetsOfMe) {
 
         if (KEEP_FAVORITES && status.isFavorited()) {
             return false;
@@ -92,8 +94,7 @@ public class SnapTwitter {
             return false;
         }
 
-        long dateDiff = TimeUnit.DAYS.convert(now.getTime() - status.getCreatedAt().getTime(), TimeUnit.MILLISECONDS);
-        if (dateDiff <= DAYS_TO_KEEP) {
+        if (status.getCreatedAt().compareTo(dateToDeleteBefore) > 0) {
             return false;
         }
 
@@ -107,4 +108,8 @@ public class SnapTwitter {
     public List<String> getDeletedStatuses() {
         return deletedStatuses;
     }
+
+    public long getDaysToKeep() { return DAYS_TO_KEEP; }
+
+    public boolean getKeepFavorites() { return KEEP_FAVORITES; }
 }
