@@ -3,12 +3,17 @@
 <cronentries>
     <cron>
         <url>/timeline?rt</url>
-        <description>delete retweeted tweets below average</description>
-        <schedule>every 180 minutes</schedule>
+        <description>Delete retweeted tweets below average</description>
+        <schedule>every 288 minutes</schedule>
+    </cron>
+    <cron>
+        <url>/timeline?ot</url>
+        <description>Delete old tweets</description>
+        <schedule>every 467 minutes</schedule>
     </cron>
     <cron>
         <url>/timeline</url>
-        <description>delete the rest</description>
+        <description>Delete recent tweets</description>
         <schedule>every 2 hours</schedule>
     </cron>
 </cronentries>

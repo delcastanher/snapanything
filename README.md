@@ -37,7 +37,7 @@ detailed instructions.
 
 * Copy Keys, Secrets and Tokens
 
-* Edit the **final variables** at `SnapTwitter.java` filling up with your credentials and to personalize behavior   
+* Edit the **final variables** at `MyTwitter.java` filling up with your credentials and to personalize behavior   
 
 ## Maven
 ### Running locally
@@ -46,7 +46,8 @@ detailed instructions.
 
 To use vist: 
 * [http://localhost:8080/timeline?rt](http://localhost:8080/timeline?rt) to delete retweeted tweets below average
-* [http://localhost:8080/timeline](http://localhost:8080/timeline) to delete the rest
+* [http://localhost:8080/timeline](http://localhost:8080/timeline) to delete recent tweets
+* [http://localhost:8080/timeline?ot](http://localhost:8080/timeline?ot) to delete old tweets
 
 ### Deploying
 

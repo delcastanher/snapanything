@@ -59,6 +59,21 @@ limitations under the License.
       <artifactId>twitter4j-core</artifactId>
       <version>[4.0,)</version>
     </dependency>
+    <dependency>
+      <groupId>org.jsoup</groupId>
+      <artifactId>jsoup</artifactId>
+      <version>1.11.3</version>
+    </dependency>
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20180130</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.5.5</version>
+    </dependency>
 
     <!-- [START_EXCLUDE] -->
     <!-- Test Dependencies -->
