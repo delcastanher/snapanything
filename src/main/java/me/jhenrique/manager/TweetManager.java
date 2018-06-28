@@ -1,20 +1,16 @@
 package me.jhenrique.manager;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import me.jhenrique.model.Tweet;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -25,15 +21,10 @@ import org.jsoup.select.Elements;
  * Class to getting tweets based on username and optional time constraints
  * 
  * @author Jefferson Henrique
+ * @author Ricardo Delcastanher
  */
 public class TweetManager {
 	
-	private static final HttpClient defaultHttpClient = HttpClients.createDefault();
-	
-	static {
-		Logger.getLogger("org.apache.http").setLevel(Level.OFF);
-	}
-
 	/**
 	 * @param username A specific username (without @)
 	 * @param since Lower bound date (yyyy-mm-dd)
@@ -57,12 +48,17 @@ public class TweetManager {
 			appendQuery += " "+querySearch;
 		}
 		
-		String url = String.format("https://twitter.com/i/search/timeline?f=realtime&q=%s&src=typd&max_position=%s", URLEncoder.encode(appendQuery, "UTF-8"), scrollCursor);
-		
-		HttpGet httpGet = new HttpGet(url);
-		HttpEntity resp = defaultHttpClient.execute(httpGet).getEntity();
-		
-		return EntityUtils.toString(resp);
+		String uri = String.format("https://twitter.com/i/search/timeline?f=realtime&q=%s&src=typd&max_position=%s", URLEncoder.encode(appendQuery, "UTF-8"), scrollCursor);
+
+		URL url = new URL(uri);
+		BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+		StringBuffer json = new StringBuffer();
+		String line;
+		while ((line = reader.readLine()) != null) {
+			json.append(line);
+		}
+
+		return json.toString();
 	}
 	
 	/**
