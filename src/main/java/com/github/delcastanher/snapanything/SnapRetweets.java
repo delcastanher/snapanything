@@ -11,8 +11,7 @@ public class SnapRetweets extends SnapTwitter {
 
     public SnapRetweets() throws TwitterException {
         List<Status> statusesRetweetsOfMe = getRetweetsOfMe();
-        int retweetsTotalSum = getRetweetsCount(statusesRetweetsOfMe);
-        int retweetAverage = (int) Math.floor(retweetsTotalSum / statusesRetweetsOfMe.size());
+        int retweetAverage = (int) statusesRetweetsOfMe.stream().mapToDouble(Status::getRetweetCount).average().orElse(0.0);
         myTwitter.setKeepRetweetsOfMeAboveAverage(retweetAverage);
         for (Status status : statusesRetweetsOfMe) {
             if (myTwitter.isMyTweetEligibleToDelete(status)) {
@@ -24,22 +23,13 @@ public class SnapRetweets extends SnapTwitter {
 
     private List<Status> getRetweetsOfMe() throws TwitterException {
         List<Status> statusesRetweetsOfMine = new ArrayList<Status>();
-        List<Status> statuses;
+        List<Status> statusesPerPage;
         int page = 1;
         do {
             Paging paging = new Paging(page++);
-            statuses = myTwitter.getTwitter().getRetweetsOfMe(paging);
-            statusesRetweetsOfMine.addAll(statuses);
-        } while (statuses.size() > 0);
+            statusesPerPage = myTwitter.getTwitter().getRetweetsOfMe(paging);
+            statusesRetweetsOfMine.addAll(statusesPerPage);
+        } while (statusesPerPage.size() > 0);
         return statusesRetweetsOfMine;
     }
-
-    private int getRetweetsCount(List<Status> statuses) {
-        int retweetsTotalSum = 0;
-        for (Status status: statuses) {
-            retweetsTotalSum += status.getRetweetCount();
-        }
-        return retweetsTotalSum;
-    }
-
 }
