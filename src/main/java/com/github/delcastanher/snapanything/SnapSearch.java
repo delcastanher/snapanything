@@ -30,17 +30,30 @@ public class SnapSearch extends SnapTwitter {
                     myTwitter.getTwitter().destroyStatus(status.getId());
                 }
             } catch (TwitterException e) {
-                saveTweetOnDatastore(tweet);
-                throw e;
+                if (acceptExceptionForThisTwitterErrorCode(e.getErrorCode())) {
+                    saveTweetOnDatastore(tweet);
+                    throw e;
+                }
             }
         }
         saveTweetOnDatastore(lastReadedTweet);
     }
 
+    private boolean acceptExceptionForThisTwitterErrorCode(int errorCode){
+        switch (errorCode){
+            //[INFO] GCLOUD: TwitterException{exceptionCode=[168a95bc-0f0b152c], statusCode=403, message=You may not delete another user's status., code=183, retryAfter=-1, rateLimitStatus=null, version=4.0.6}
+            case 183: return false;
+            //[INFO] GCLOUD: TwitterException{exceptionCode=[e8914fbf-0ebc47ae], statusCode=401, message=You have been blocked from the author of this tweet., code=136, retryAfter=-1, rateLimitStatus=RateLimitStatusJSONImpl{remaining=677, limit=900, resetTimeInSeconds=1531484259, secondsUntilReset=415}, version=4.0.6}
+            case 136: return false;
+
+            default: return true;
+        }
+    }
+
     private TwitterCriteria createSearchCriteria() throws TwitterException {
         String authenticatedUserScreenName = myTwitter.getTwitter().verifyCredentials().getScreenName();
         String searchUntilDate = generateSearchUntilDate();
-        return TwitterCriteria.create().setUsername(authenticatedUserScreenName).setUntil(searchUntilDate);
+        return TwitterCriteria.create().setQuerySearch("@" + authenticatedUserScreenName).setUntil(searchUntilDate);
     }
 
     public String generateSearchUntilDate() {
